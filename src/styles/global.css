@@ -227,6 +227,8 @@ html[lang='ar'] .hdr-link { font-size: 16px; letter-spacing: 0; font-weight: 600
   display: flex; flex-direction: column; padding: 22px 26px 30px; overflow-y: auto;
   opacity: 0; transition: opacity 0.4s var(--ease);
 }
+.mobile-menu[hidden] { display: none; }
+.mobile-menu:not(.open) { pointer-events: none; }
 .mobile-menu.open { opacity: 1; }
 .mm-top { display: flex; align-items: center; justify-content: space-between; }
 .mm-top img { height: 48px; width: auto; }
