@@ -1,0 +1,56 @@
+---
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import PageTitle from '../components/PageTitle.astro';
+import ContactForm from '../components/ContactForm.astro';
+import { type Lang, t, u, routes, contact, services } from '../data/site';
+interface Props { lang: Lang; service: (typeof services)[number] }
+const { lang, service } = Astro.props;
+const ar = lang === 'ar';
+const r = routes[lang];
+const s = t[lang];
+const title = ar ? service.titleAr : service.titleEn;
+const side = [
+  { label: s.nav.home, href: r.home },
+  { label: s.nav.about, href: r.about },
+  { label: s.nav.projects, href: r.project('aiangle') },
+  { label: s.nav.careers, href: r.careers },
+  { label: s.nav.contact, href: r.contact },
+  { label: s.otherLangName, href: ar ? routes.en.service(service.en) : routes.ar.service(service.ar) },
+];
+const p1 = 'The talent at kimono runs wide and deep. Across many markets, geographies & typologies, our team members are some of the finest professionals in the industry wide and deep. Across many markets, geographies and typologies, our team members are some of the finest.';
+---
+<Base lang={lang} title={title} alt={ar ? routes.en.service(service.en) : routes.ar.service(service.ar)} active="projects">
+  <PageTitle title={title} bg="2026/02/slide-33.webp" />
+  <section class="service-page section-pad">
+    <div class="container service-grid">
+      <aside class="service-side">
+        <ul>{side.map((l) => <li><a href={u(l.href)}>{l.label}<Icon name={ar ? 'arrow-left' : 'chevron-right'} size={14} /></a></li>)}</ul>
+      </aside>
+      <div class="service-body" lang="en" dir="ltr">
+        <h2 class="service-title">{title}</h2>
+        <p>{p1}</p>
+        <h3 class="service-sub">SERVICE STEPS</h3>
+        <p>The talent at kimono runs wide and deep. Across many markets, geographies &amp; typologies, our team members are some of the finest professionals in the industry wide and deep.</p>
+        <ul class="check-list">
+          <li><Icon name="check" size={14} />The talent at kimora runs wide and deep. Across many markets, geographies</li>
+          <li><Icon name="check" size={14} />Our team members are some of the finest professionals in the industry wide &amp; deep</li>
+          <li><Icon name="check" size={14} />Across many markets, geographies and typologies, our team members are some</li>
+        </ul>
+        <p>{p1}</p>
+        <p>{p1}The talent at kimora runs wide and deep. Across many markets, geographies &amp; typologies, our team members are some of the finest professionals in the industry wide and deep. Across many markets, geographies and typologies, our team members are some of the finest.</p>
+      </div>
+    </div>
+  </section>
+  <section class="service-contact section-pad-sm">
+    <div class="container contact-grid">
+      <div class="contact-side">
+        <span class="eyebrow"><b>01 //</b> Contact Us</span>
+        <h2 class="heading h-md">Feel Free To Ask Us<br /><span class="accent">Anything</span></h2>
+        <div class="cp-info"><span class="cp-label">CALL US FOR QUERY</span><a href={contact.phoneHref}>{contact.phone}</a></div>
+        <div class="cp-info"><span class="cp-label">SEND US EMAIL</span><a href={`mailto:${contact.email}`}>{contact.email}</a></div>
+      </div>
+      <div><ContactForm lang="en" variant="box" subject={`Enquiry: ${service.titleEn}`} /></div>
+    </div>
+  </section>
+</Base>

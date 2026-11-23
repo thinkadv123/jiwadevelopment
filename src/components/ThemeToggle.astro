@@ -1,0 +1,13 @@
+---
+import Icon from './Icon.astro';
+import { type Lang, t } from '../data/site';
+interface Props { lang: Lang }
+const s = t[Astro.props.lang];
+---
+<button class="theme-toggle" type="button" data-theme-toggle aria-label={s.toggleDark} data-label-dark={s.toggleDark} data-label-light={s.toggleLight}>
+  <span class="tt-label">{s.toggleDark}</span>
+  <span class="tt-btn">
+    <Icon name="sun" size={22} class="tt-sun" />
+    <Icon name="moon" size={18} class="tt-moon" />
+  </span>
+</button>

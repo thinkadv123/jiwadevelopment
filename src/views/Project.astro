@@ -1,0 +1,137 @@
+---
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import PageTitle from '../components/PageTitle.astro';
+import { type Lang, type Project, u, img, routes, services, consultants } from '../data/site';
+
+interface Props { lang: Lang; project: Project; altSlug?: string }
+const { lang, project: p } = Astro.props;
+const ar = lang === 'ar';
+const c = p[lang];
+const r = routes[lang];
+const kinds = ['commercial', 'administrative', 'medical'];
+const unitImg = (i: number) => p.unitImages.find((x) => x.toLowerCase().includes(kinds[i])) ?? p.unitImages[i];
+const fmt = (v: number) => (Number.isInteger(v) ? String(v) : String(v));
+---
+<Base lang={lang} title={c.title} alt={ar ? routes.en.project(p.slug) : routes.ar.project(p.slug)} active="projects">
+  <PageTitle title={c.title} bg={p.featured} button={p.brochure ? { label: c.brochureLabel!, href: p.brochure, download: true } : undefined} />
+
+  <section class="pj-head">
+    <div class="container pj-head-row">
+      <h2 class="heading h-lg reveal">{c.heading[0]} <span class="accent">{c.heading[1]}</span></h2>
+      <a class="btn btn-accent btn-lg reveal" href={u(r.about)}><span>{c.aboutBtn}</span><Icon name="arrow-up-right" size={14} /></a>
+    </div>
+  </section>
+
+  <section class="pj-about">
+    <div class="container pj-about-grid">
+      <div class="pj-about-img reveal"><img src={img(p.aboutImage)} alt={c.title} loading="lazy" /></div>
+      <div>
+        <h5 class="line-title reveal">{c.aboutTitle}</h5>
+        {c.about.map((t) => <p class="body-text reveal" style="--d:.1s">{t}</p>)}
+      </div>
+    </div>
+  </section>
+
+  {c.stats.length > 0 && (
+    <section class="pj-stats">
+      <div class="container stat-row stat-row-wide">
+        {c.stats.map((k, i) => (
+          <div class="stat reveal" style={`--d:${i * 0.1}s`}>
+            <div class="stat-num"><span data-count={k.value}>0</span><span class="stat-suf">{k.suffix}</span></div>
+            <div class="stat-bar"><i></i></div>
+            <div class="stat-lbl">{k.label}</div>
+          </div>
+        ))}
+      </div>
+    </section>
+  )}
+
+  <section class="pj-location section-pad">
+    <div class="container">
+      <h2 class="heading h-lg text-center reveal">{c.locationHeading[0]} <span class="accent">{c.locationHeading[1]}</span></h2>
+      <div class="pj-location-grid">
+        <div class="pj-map reveal"><img src={img(p.map)} alt={c.title} loading="lazy" /></div>
+        <div>
+          <p class="body-text reveal">{c.locationText}</p>
+          <div class="dist-grid">
+            {c.distances.map((d, i) => (
+              <div class="stat stat-sm reveal" style={`--d:${(i % 3) * 0.1}s`}>
+                <div class="stat-num"><span data-count={d.value}>0</span><span class="stat-suf">{d.suffix}</span></div>
+                <div class="stat-bar"><i></i></div>
+                <div class="stat-lbl">{d.label}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="pj-units" data-accordion>
+    <div class="container pj-units-grid">
+      <div class="unit-stack reveal">
+        {c.units.map((_, i) => <img class:list={{ 'is-active': i === 1 }} src={img(unitImg(i))} alt="" loading="lazy" data-unit-img={i} />)}
+      </div>
+      <div>
+        <h1 class="heading h-xl reveal">{c.unitsHeading[0]} <span class="accent">{c.unitsHeading[1]}</span></h1>
+        <div class="accordion">
+          {c.units.map((un, i) => (
+            <div class:list={['acc-item', { 'is-open': i === 1 }]}>
+              <button type="button" class="acc-head" aria-expanded={i === 1 ? 'true' : 'false'} data-acc={i}>
+                <h5>{un.title}</h5>
+                <span class="acc-icon"><Icon name="plus" size={18} class="i-plus" /><Icon name="minus" size={18} class="i-minus" /></span>
+              </button>
+              <div class="acc-body"><div class="acc-inner">{un.text.map((t) => <p>{t}</p>)}</div></div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="pj-facilities section-pad">
+    <div class="container">
+      <h2 class="heading h-lg text-center reveal">{c.facilitiesHeading[0]} <span class="accent">{c.facilitiesHeading[1]}</span></h2>
+    </div>
+    <div class="fac-wrap">
+      <div class="fac-track" data-marquee data-speed="40" data-pause-hover>
+        {[...services, ...services].map((s, i) => (
+          <a class="fac-card" href={u(r.service(ar ? s.ar : s.en))} aria-hidden={i >= services.length ? 'true' : undefined} tabindex={i >= services.length ? -1 : undefined}>
+            <span class="fac-icon">
+              <img class="ico" src={img(s.icon)} alt="" loading="lazy" />
+              <img class="ico-h" src={img(s.iconHover)} alt="" loading="lazy" />
+            </span>
+            <span class="fac-num">{String((i % services.length) + 1).padStart(2, '0')}</span>
+            <h6>{ar ? s.titleAr : s.titleEn}</h6>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="pj-floors section-pad" data-tabs>
+    <div class="container">
+      <h2 class="heading h-lg text-center reveal">{c.floorHeading[0]} <span class="accent">{c.floorHeading[1]}</span></h2>
+      <div class="floor-tabs" role="tablist">
+        {c.floors.map((f, i) => <button type="button" role="tab" class:list={{ 'is-active': i === 0 }} data-tab={i}>{f}</button>)}
+      </div>
+      <div class="floor-panels">
+        {p.floorImages.map((f, i) => (
+          <div class:list={['floor-panel', { 'is-active': i === 0 }]} data-panel={i}>
+            <a href={img(f)} target="_blank" rel="noopener"><img src={img(f)} alt={c.floors[i]} loading="lazy" /></a>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="pj-consultants section-pad">
+    <div class="container">
+      <h2 class="heading h-lg text-center reveal">{c.consultantsHeading[0]} <span class="accent">{c.consultantsHeading[1]}</span></h2>
+      <div class="consult-grid">
+        {consultants.map((src, i) => <div class="consult-card reveal" style={`--d:${(i % 5) * 0.06}s`}><img src={img(src)} alt="" loading="lazy" /></div>)}
+      </div>
+    </div>
+  </section>
+</Base>

@@ -1,0 +1,44 @@
+---
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import PageTitle from '../components/PageTitle.astro';
+import { type Lang, u, routes, contact } from '../data/site';
+interface Props { lang: Lang; job: { slug: string; title: string; html: string; category: string | null; type: string | null } }
+const { lang, job } = Astro.props;
+const ar = lang === 'ar';
+const r = routes[lang];
+const endpoint = import.meta.env.PUBLIC_FORM_ENDPOINT || '';
+const other = ar ? routes.en.careers : routes.ar.careers;
+---
+<Base lang={lang} title={job.title} alt={other} active="careers">
+  <PageTitle title={job.title} bg="2026/02/slide-11.webp" />
+  <section class="job-page section-pad-sm">
+    <div class="container job-container">
+      <article class="job-content" set:html={job.html} />
+      <div class="job-specs">
+        {job.category && <div><strong>Job Category:</strong> {job.category}</div>}
+        {job.type && <div><strong>Job Type:</strong> {job.type}</div>}
+      </div>
+      <div class="apply-box">
+        <h2>Apply for this position</h2>
+        <form class="jiwa-form apply-form" data-form data-endpoint={endpoint} data-mailto={contact.email} data-subject={`Job application: ${job.title}`}
+          data-ok={ar ? 'تم إرسال طلبك بنجاح.' : 'Your application has been submitted successfully.'}
+          data-err={ar ? 'حدث خطأ، حاول مرة أخرى.' : 'Something went wrong. Please try again.'}
+          data-sending="…" method="post" enctype="multipart/form-data" action={endpoint || undefined}>
+          <input type="hidden" name="position" value={job.title} />
+          <label><span class="sr">Full Name</span><input type="text" name="name" required placeholder="Full Name" /></label>
+          <label><span class="sr">Email</span><input type="email" name="email" required placeholder="Email" /></label>
+          <label><span class="sr">Phone</span><input type="tel" name="phone" required placeholder="Phone" /></label>
+          <label><span class="sr">Cover Letter</span><textarea name="message" rows="7" required placeholder="Cover Letter"></textarea></label>
+          <label class="file"><span class="sr">Upload CV/Resume</span><input type="file" name="cv" accept=".pdf,.doc,.docx" required={endpoint ? true : undefined} /></label>
+          <small class="muted">Allowed Type(s): .pdf, .doc, .docx</small>
+          <label class="check"><input type="checkbox" required /> By using this form you agree with the storage and handling of your data by this website. <span>*</span></label>
+          <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" class="hp" aria-hidden="true" />
+          <button type="submit" class="btn btn-accent"><span>Submit</span></button>
+          <p class="form-status" role="status" aria-live="polite"></p>
+        </form>
+      </div>
+      <a class="back-link" href={u(r.careers)}><Icon name={ar ? 'arrow-right' : 'arrow-left'} size={13} /> Back to listings</a>
+    </div>
+  </section>
+</Base>

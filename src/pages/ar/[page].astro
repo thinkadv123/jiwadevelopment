@@ -1,0 +1,17 @@
+---
+// Arabic pages keep the original Arabic URLs: /ar/عن-jiwa/, /ar/الوظائف/, /ar/تواصل-معنا/
+import About from '../../views/About.astro';
+import Careers from '../../views/Careers.astro';
+import Contact from '../../views/Contact.astro';
+export function getStaticPaths() {
+  return [
+    { params: { page: 'عن-jiwa' }, props: { view: 'about' } },
+    { params: { page: 'الوظائف' }, props: { view: 'careers' } },
+    { params: { page: 'تواصل-معنا' }, props: { view: 'contact' } },
+  ];
+}
+const { view } = Astro.props;
+---
+{view === 'about' && <About lang="ar" />}
+{view === 'careers' && <Careers lang="ar" />}
+{view === 'contact' && <Contact lang="ar" />}

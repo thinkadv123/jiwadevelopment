@@ -1,0 +1,210 @@
+---
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import PageTitle from '../components/PageTitle.astro';
+import Clients from '../components/Clients.astro';
+import { type Lang, img, routes } from '../data/site';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const ar = lang === 'ar';
+
+const c = ar
+  ? {
+      title: 'قصة جيوا للتطوير العقارى',
+      shaping: ['رسم ملامح', 'المستقبل'],
+      shapingSub: 'العقارات في مصر',
+      shapingText: 'منذ بداية مسيرتها، أصبحت جيوا علامة مميزة في التطوير العقاري المصري. نحن لا نبني مجرد مبانٍ، بل نصنع مشاريع تضيف قيمة حقيقية للمجتمعات التي نخدمها',
+      counters: [
+        { v: 100, s: '+', l: 'ألف متر مربع مساحات مطورة' },
+        { v: 20, s: '+', l: 'سنة من الخبرة' },
+        { v: 50, s: '+', l: 'مشروع على أرض الواقع' },
+      ],
+      landmark: ['أبرز مشاريعنا', 'العقارية'],
+      landmarks: [
+        { t: 'Aiangle (القاهرة الجديدة)', img: '2026/03/meta-box-aiangle.webp', text: 'يعد أيانجل مول من أكبر مشروعاتنا، على مساحة 7,300 متر مربع في حي النرجس بالقاهرة الجديدة. يتميز بموقع استراتيجي مع مدخل مباشر من شارع التسعين الجنوبي، ليكون وجهة تجارية وخدمية متكاملة تخدم المجتمعات السكنية والمدارس المحيطة.' },
+        { t: 'One Plaza (القاهرة الجديدة)', img: '2026/03/meta-box-one-plaza.webp', text: 'يعد وان بلازا من أبرز مشروعات جيوا، ويقع في قلب التجمع الأول بالقاهرة الجديدة مباشرة على محور مصطفى كامل الحيوي. يمتد المشروع على مساحة تزيد عن 3,000 متر مربع، ويضم خمسة طوابق تجمع بين الوحدات التجارية والإدارية والطبية، في واحد من أرقى الأحياء السكنية بالقاهرة.' },
+        { t: 'Za White (الشيخ زايد)', img: '2026/03/meta-box-za-white.webp', text: 'يمتد "زا وايت" على مساحة 1,816 متر مربع في موقع استراتيجي أمام مول العرب، ويتكوّن من أرضي ودورين علويين. يقدّم المشروع بيئة متكاملة تجمع بين مساحات عمل مصممة لتعزيز الإنتاجية ووحدات طبية فاخرة، بتركيبة تصميمية مدروسة تعتمد على الإضاءة الطبيعية وتحقق توازنًا مثاليًا بين الراحة والوظيفية، بما يوفّر تجربة راقية بمعايير احترافية عالية.' },
+      ],
+      north: 'North plus”Soon”',
+      marquee: [] as string[],
+      aboutTitle: 'عن جيوا للتطوير العقارى',
+      aboutText: 'جيوا أكثر من مجرد أسم إنها روح الأبتكار لقد قمنا بتقديم عدد من المشروعات التى توجد فى أكثر من منطقة حيوية بالتجمع الخامس و الشيخ زايد نحن نعتبر كل مشروع تحديا شعارنا هو فى جيوا يكمن السر',
+      philosophy: 'فلسفتنا الجوهرية',
+      mission: ['مهمتنا', 'مهمتنا فى جيوا للتطوير العقارى هى توفير كافة أنواع الخدمات المتكاملة للعملاء وتطويرها من خلال إنشاء المشاريع المتكاملة من الناحية التجارية و الطبية و الإدارية.'],
+      vision: ['رؤيتنا', 'رؤيتنا فى جيوا للتطوير العقارى تسعى الشركة إلى تقديم الأفضل من ناحية الجودة و التميز فى المشاريع التجارية و الإدارية والطبية وطموحاتنا فى المستقبل هى انعكاس لأهدافنا'],
+      founderSub: 'السيد/ هاني الجمال – مؤسس شركة جيوا',
+      founderTitle: 'الرؤية الملهمة وراء العلامة التجارية.',
+      founderText: [
+        'م \\ هانى الجمال هو رجل أعمال فى مجال البناء ولدية مجموعة كبيرة و متنوعة من الأراضى فى شرق القاهرة تصلح للمشاريع التجارية و الإدارية و الطبية يمتلك سلسلة مطاعم فى فيينا ولدية مجموعة مصانع تعمل على التنمية الصناعية لمختلف القطاعات مثل شركات النفط و الغاز و البتروكيماويات.',
+      ],
+      founderWordTitle: 'كلمة من مؤسس شركة جيوا',
+      founderWord: 'فى جيوا للتطوير العقارى نسعى إلى تقديم مشروعات تجمع بين الجودة ، التصميم المتميز والاستثمار الناجح ندعوكم لاستكشاف مشاريعنا ومعرفة رؤيتنا المستقبلية',
+      why: 'لماذا جيوا؟',
+      whyItems: ['موقع أستراتيجى', 'تاريخ من الإنجازات', 'مساحات متنوعة', 'معايير عالمية'],
+    }
+  : {
+      title: 'About Us',
+      shaping: ['Shaping', 'the', 'Future'],
+      shapingSub: 'of Egyptian Real Estate',
+      shapingText: 'Since its inception, JIWA has emerged as an icon of development and uniqueness in the Egyptian real estate market. We don’t just build structures; we realize ambitious visions that add tangible value to the communities we serve.',
+      counters: [
+        { v: 100, s: 'K +', l: 'SQM Developed Area' },
+        { v: 20, s: '+', l: 'Years of Experience' },
+        { v: 50, s: '+', l: 'Delivered Projects' },
+      ],
+      landmark: ['Our Landmark', 'Developments'],
+      landmarks: [
+        { t: 'Aiangle (New Cairo)', img: '2026/03/meta-box-aiangle.webp', text: 'Our largest project, spanning 7,300 m² in the Narges neighborhood. With direct access from South Teseen Street, it serves as a massive commercial and service destination for the surrounding international schools and compounds.' },
+        { t: 'One Plaza (New Cairo)', img: '2026/03/meta-box-one-plaza.webp', text: "A 3,000 m² hub in the First Settlement. Located on the Mustafa Kamel Axis, this 5-floor landmark integrates retail, medical, and administrative units in one of Cairo's most prestigious residential neighborhoods." },
+        { t: 'Za White (Sheikh Zayed)', img: '2026/03/meta-box-za-white.webp', text: 'A premier 1,800 m² boutique development facing Mall of Arabia. ZAWHITE focuses on productivity-boosting workspaces and high-end medical units designed with natural light and functional luxury.' },
+      ],
+      north: 'North plus”Soon”',
+      marquee: ['VISION', 'INNOVATION', 'LEGACY', 'EXCELLENCE'],
+      aboutTitle: 'About JIWA Developments',
+      aboutText: 'With a footprint spanning massive areas and a portfolio of diverse projects, JIWA has become a brand synonymous with innovative design and uncompromising quality. Every project we undertake is a reflection of our commitment to excellence and our ability to meet the evolving needs of modern investors and businesses.',
+      philosophy: 'Our Core Philosophy',
+      mission: ['Our Mission', 'To provide an integrated real estate experience through pioneering commercial, administrative, and medical sectors. We strive to exceed customer expectations and enhance the quality of life through functional, world-class environments.'],
+      vision: ['Our Vision', 'To lead the Egyptian real estate market by adopting the latest global technologies and international standards. We look toward a future where JIWA is the primary benchmark for quality, uniqueness, and innovation.'],
+      founderSub: 'Mr. Hany El Gamal – Founder of JIWA',
+      founderTitle: 'The Visionary Behind the Brand',
+      founderText: [
+        'With a career in construction and development dating back to 1999, Mr. Hany El Gamal brings over two decades of multifaceted expertise to JIWA. His diverse entrepreneurial background—ranging from managing international oil and gas ventures to industrial development and hospitality in Vienna—has shaped JIWA’s global standards.',
+        'Today, Mr. El Gamal oversees a premium land bank in East Cairo, specifically curated for high-impact commercial, administrative, and medical developments that drive economic growth.',
+      ],
+      founderWordTitle: '',
+      founderWord: '',
+      why: 'Why Choose JIWA for Your Next Investment?',
+      whyItems: ['Strategic Locations', 'Proven Track Record', 'Versatile Spaces', 'International Standards'],
+    };
+
+const whyImages = [
+  '2026/04/WhatsApp-Image-2026-04-16-at-5.20.59-PM.jpeg',
+  '2026/04/WhatsApp-Image-2026-04-16-at-5.20.59-PM-1.jpeg',
+  '2026/04/WhatsApp-Image-2026-04-16-at-5.20.59-PM-2.jpeg',
+  '2026/04/WhatsApp-Image-2026-04-19-at-10.52.28-AM-1.jpeg',
+];
+const colA = ar ? ['g8', 'g6', 'g3'] : ['a16', 'g5', 'g10'];
+const colB = ar ? ['a16', 'g5', 'g10'] : ['g8', 'g6', 'g3'];
+const g = (n: string) => img(`2026/02/${n}-368x442.${n === 'a16' ? 'jpg' : 'webp'}`);
+---
+<Base lang={lang} title={c.title} alt={ar ? routes.en.about : routes.ar.about} active="about">
+  <PageTitle title={c.title} bg="2026/02/slide-33.webp" />
+
+  <!-- Shaping the future -->
+  <section class="ab-intro section-pad">
+    <div class="container ab-intro-grid">
+      <div class="ab-intro-main">
+        <div class="ab-intro-top">
+          <div class="flip-img reveal">
+            <img class="front" src={img('2026/02/x2.webp')} alt="" loading="lazy" />
+            <img class="back" src={img('2026/02/x1.webp')} alt="" loading="lazy" />
+          </div>
+          <div class="ab-intro-text">
+            <h2 class="heading h-lg reveal">
+              {ar ? <>{c.shaping[0]}<br /><span class="accent">{c.shaping[1]}</span></> : <>{c.shaping[0]}<br />{c.shaping[1]} <span class="accent">{c.shaping[2]}</span></>}
+            </h2>
+            <p class="lead reveal" style="--d:.1s">{c.shapingSub}</p>
+            <p class="body-text reveal" style="--d:.2s">{c.shapingText}</p>
+          </div>
+        </div>
+        <div class="stat-row">
+          {c.counters.map((k, i) => (
+            <div class="stat reveal" style={`--d:${i * 0.1}s`}>
+              <div class="stat-num"><span data-count={k.v}>0</span><span class="stat-suf">{k.s}</span></div>
+              <div class="stat-bar"><i></i></div>
+              <div class="stat-lbl">{k.l}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+      <div class="flip-img tall reveal" style="--d:.2s">
+        <img class="front" src={img('2026/02/x3.webp')} alt="" loading="lazy" />
+        <img class="back" src={img('2026/02/x4.webp')} alt="" loading="lazy" />
+      </div>
+    </div>
+  </section>
+
+  <!-- Landmark developments -->
+  <section class="landmark" data-tabs>
+    <div class="container-right landmark-grid">
+      <div class="landmark-left">
+        <h2 class="landmark-title reveal">{c.landmark[0]}<br /><span class="accent">{c.landmark[1]}</span></h2>
+        <ul class="arrow-tabs">
+          {c.landmarks.map((l, i) => (
+            <li><button type="button" class:list={{ 'is-active': i === 0 }} data-tab={i}><Icon name="arrow-up-right" size={18} /><span>{l.t}</span></button></li>
+          ))}
+          <li><button type="button" class="is-soon" disabled><Icon name="arrow-up-right" size={18} /><span>{c.north}</span></button></li>
+        </ul>
+      </div>
+      <div class="landmark-right">
+        {c.landmarks.map((l, i) => (
+          <div class:list={['landmark-panel', { 'is-active': i === 0 }]} data-panel={i}>
+            <div class="lm-img"><img src={img(l.img)} alt={l.t} loading="lazy" /></div>
+            <div class="lm-text">{l.text}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  {c.marquee.length > 0 && (
+    <section class="word-marquee" aria-hidden="true">
+      <div class="wm-track" data-marquee data-copies="3" data-speed="60">
+        {[...c.marquee, ...c.marquee, ...c.marquee].map((w, i) => <span class:list={{ outline: i % 2 === 0 }}>{w}</span>)}
+      </div>
+    </section>
+  )}
+
+  <!-- About + philosophy -->
+  <section class="ab-philo section-pad">
+    <div class="container ab-philo-grid">
+      <div>
+        <h1 class="line-title reveal">{c.aboutTitle}</h1>
+        <p class="body-text reveal">{c.aboutText}</p>
+        <h1 class="line-title mt-40 reveal">{c.philosophy}</h1>
+        <p class="lead-sm reveal">{c.mission[0]}</p>
+        <p class="body-text reveal">{c.mission[1]}</p>
+        <p class="lead-sm reveal">{c.vision[0]}</p>
+        <p class="body-text reveal">{c.vision[1]}</p>
+      </div>
+      <div class="v-gallery" aria-hidden="true">
+        <div class="v-col"><div class="v-track up">{[...colA, ...colA].map((n) => <img src={g(n)} alt="" loading="lazy" />)}</div></div>
+        <div class="v-col"><div class="v-track down">{[...colB, ...colB].map((n) => <img src={g(n)} alt="" loading="lazy" />)}</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Founder -->
+  <section class="founder section-pad">
+    <div class="container founder-grid">
+      <div class="founder-img reveal"><img src={img('2026/02/dr-el-gamal.webp')} alt={c.founderSub} loading="lazy" /></div>
+      <div class="founder-text">
+        <span class="eyebrow reveal">{c.founderSub}</span>
+        <h5 class="line-title reveal">{c.founderTitle}</h5>
+        {c.founderText.map((p) => <p class="body-text reveal">{p}</p>)}
+        {c.founderWordTitle && <h5 class="line-title mt-40 reveal">{c.founderWordTitle}</h5>}
+        {c.founderWord && <p class="body-text reveal">{c.founderWord}</p>}
+      </div>
+    </div>
+  </section>
+
+  <!-- Why choose -->
+  <section class="why section-pad">
+    <div class="container">
+      <div class="why-head"><h2 class="heading h-lg reveal">{c.why}</h2></div>
+      <ul class="why-list" data-why>
+        {c.whyItems.map((w, i) => (
+          <li class:list={['why-item reveal', { 'is-active': i === 0 }]} style={`--d:${i * 0.08}s`}>
+            <span class="why-num">{String(i + 1).padStart(2, '0')}</span>
+            <h5>{w}</h5>
+            <span class="why-line" aria-hidden="true"></span>
+            <img class="why-img" src={img(whyImages[i])} alt="" loading="lazy" />
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <Clients lang={lang} />
+</Base>

@@ -1,0 +1,91 @@
+---
+import Icon from './Icon.astro';
+import { type Lang, t, u, img, routes, projects, projectMenu, logos } from '../data/site';
+interface Props { lang: Lang; alt: string; active?: string }
+const { lang, alt, active } = Astro.props;
+const s = t[lang];
+const r = routes[lang];
+const list = projectMenu.map((slug) => projects.find((p) => p.slug === slug)!);
+const links = [
+  { key: 'home', href: r.home, label: s.nav.home },
+  { key: 'about', href: r.about, label: s.nav.about },
+  { key: 'projects', href: '#', label: s.nav.projects, dropdown: true },
+  { key: 'careers', href: r.careers, label: s.nav.careers },
+  { key: 'contact', href: r.contact, label: s.nav.contact },
+];
+---
+<header class="site-header" data-header>
+  <div class="hdr-inner">
+    <a class="hdr-logo" href={u(r.home)} aria-label={s.siteName}>
+      <img src={logos.white} alt={s.siteName} width="1000" height="516" />
+    </a>
+
+    <nav class="hdr-nav" aria-label="Main">
+      <ul>
+        {links.map((l) => (
+          <li class:list={[{ 'has-drop': l.dropdown, 'is-active': active === l.key }]}>
+            {l.dropdown ? (
+              <>
+                <button type="button" class="hdr-link" aria-haspopup="true" aria-expanded="false">
+                  <span>{l.label}</span>
+                  <Icon name="chevron-down" size={13} />
+                </button>
+                <div class="hdr-drop">
+                  <div class="hdr-drop-grid">
+                    {list.map((p) => (
+                      <a class="drop-card" href={u(r.project(p.slug))}>
+                        <span class="drop-thumb" style={`background-image:url('${img(p.featured)}')`}></span>
+                        <span class="drop-name">{p[lang].title}</span>
+                        <Icon name="arrow-up-right" size={14} />
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              </>
+            ) : (
+              <a class="hdr-link" href={u(l.href)}><span>{l.label}</span></a>
+            )}
+          </li>
+        ))}
+      </ul>
+    </nav>
+
+    <div class="hdr-actions">
+      <a class="lang-switch" href={u(alt)} hreflang={lang === 'en' ? 'ar' : 'en'} lang={lang === 'en' ? 'ar' : 'en'}>
+        <Icon name="globe" size={15} />
+        <span>{s.otherLangName}</span>
+      </a>
+      <a class="hdr-cta" href={u(r.contact)}>
+        <span>{s.nav.contact}</span>
+        <Icon name="arrow-up-right" size={14} />
+      </a>
+      <button class="hdr-burger" type="button" aria-label={s.menu} aria-expanded="false" data-menu-open>
+        <Icon name="menu" size={26} />
+      </button>
+    </div>
+  </div>
+
+  <div class="mobile-menu" data-menu hidden>
+    <div class="mm-top">
+      <img src={logos.white} alt={s.siteName} width="1000" height="516" />
+      <button type="button" class="mm-close" aria-label={s.close} data-menu-close><Icon name="close" size={28} /></button>
+    </div>
+    <ul class="mm-list">
+      {links.map((l, i) =>
+        l.dropdown ? (
+          <li>
+            <span class="mm-label">{l.label}</span>
+            <ul class="mm-sub">
+              {list.map((p) => <li><a href={u(r.project(p.slug))}>{p[lang].title}</a></li>)}
+            </ul>
+          </li>
+        ) : (
+          <li><a href={u(l.href)} class:list={{ current: active === l.key }}>{l.label}</a></li>
+        )
+      )}
+    </ul>
+    <div class="mm-bottom">
+      <a class="lang-switch" href={u(alt)}><Icon name="globe" size={15} /><span>{s.otherLangName}</span></a>
+    </div>
+  </div>
+</header>

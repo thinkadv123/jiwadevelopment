@@ -1,0 +1,23 @@
+---
+// Static-site contact form. Set PUBLIC_FORM_ENDPOINT (e.g. a Formspree / Getform URL) at build time
+// to receive submissions; without it the form opens the visitor's e-mail app addressed to info@.
+import { type Lang, t, contact } from '../data/site';
+interface Props { lang: Lang; variant?: 'line' | 'box'; subject?: string }
+const { lang, variant = 'line', subject = 'Website enquiry' } = Astro.props;
+const f = t[lang].form;
+const endpoint = import.meta.env.PUBLIC_FORM_ENDPOINT || '';
+const box = variant === 'box';
+---
+<form class={`jiwa-form form-${variant}`} data-form data-endpoint={endpoint} data-mailto={contact.email} data-subject={subject}
+  data-ok={f.ok} data-err={f.err} data-sending={f.sending} method="post" action={endpoint || undefined}>
+  <div class="form-row">
+    <input type="text" name="name" required placeholder={box ? f.fullName : f.name} aria-label={box ? f.fullName : f.name} />
+    <input type="tel" name="phone" required placeholder={f.phone} aria-label={f.phone} />
+  </div>
+  <textarea name="message" rows={box ? 6 : 3} placeholder={box ? f.messageShort : f.message} aria-label={f.message}></textarea>
+  <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" class="hp" aria-hidden="true" />
+  <div class="form-actions">
+    <button type="submit" class="btn btn-accent"><span>{box ? f.submit : f.send}</span></button>
+  </div>
+  <p class="form-status" role="status" aria-live="polite"></p>
+</form>

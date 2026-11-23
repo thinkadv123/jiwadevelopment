@@ -1,0 +1,45 @@
+---
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import PageTitle from '../components/PageTitle.astro';
+import jobs from '../data/jobs.json';
+import { type Lang, u, routes } from '../data/site';
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const ar = lang === 'ar';
+const r = routes[lang];
+// Same order as the original listing (newest first)
+const list = jobs.filter((j) => j.lang === lang).reverse();
+const cats = [...new Set(list.map((j) => j.category).filter(Boolean))] as string[];
+const types = [...new Set(list.map((j) => j.type).filter(Boolean))] as string[];
+const title = ar ? 'الوظائف' : 'Careers';
+---
+<Base lang={lang} title={title} alt={ar ? routes.en.careers : routes.ar.careers} active="careers">
+  <PageTitle title={title} bg="2026/02/slide-11.webp" />
+  <section class="careers section-pad-sm">
+    <div class="container careers-inner" data-jobs>
+      <div class="job-filters">
+        {cats.length > 0 && (
+          <select data-filter="category" aria-label="Job Category">
+            <option value="">All Job Category</option>
+            {cats.map((c) => <option value={c}>{c}</option>)}
+          </select>
+        )}
+        <select data-filter="type" aria-label="Job Type">
+          <option value="">All Job Type</option>
+          {types.map((c) => <option value={c}>{c}</option>)}
+        </select>
+      </div>
+      <div class="job-list">
+        {list.map((j) => (
+          <a class="job-row" href={u(r.job(j.slug))} data-category={j.category ?? ''} data-type={j.type ?? ''}>
+            <h2>{j.title}</h2>
+            <span class="job-meta">{j.category}</span>
+            <span class="job-more">More Details <Icon name={ar ? 'arrow-left' : 'arrow-right'} size={13} /></span>
+          </a>
+        ))}
+      </div>
+      <p class="job-empty" hidden>{ar ? 'لا توجد وظائف مطابقة.' : 'Sorry! No jobs found.'}</p>
+    </div>
+  </section>
+</Base>

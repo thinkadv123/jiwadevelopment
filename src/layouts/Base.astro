@@ -1,0 +1,84 @@
+---
+import '@fontsource/sora/400.css';
+import '@fontsource/sora/500.css';
+import '@fontsource/sora/600.css';
+import '@fontsource/sora/700.css';
+import '@fontsource/cairo/400.css';
+import '@fontsource/cairo/500.css';
+import '@fontsource/cairo/600.css';
+import '@fontsource/cairo/700.css';
+import '@fontsource/playfair-display/400-italic.css';
+import '@fontsource/dm-sans/400.css';
+import '@fontsource/dm-sans/600.css';
+import '../styles/global.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import ThemeToggle from '../components/ThemeToggle.astro';
+import { type Lang, t, u, img } from '../data/site';
+
+interface Props {
+  lang: Lang;
+  title?: string;
+  description?: string;
+  /** Path of this page in the other language (for the language switcher + hreflang) */
+  alt: string;
+  /** Active nav key */
+  active?: 'home' | 'about' | 'projects' | 'careers' | 'contact';
+}
+const { lang, title, description, alt, active } = Astro.props;
+const s = t[lang];
+const pageTitle = title ? `${title} - ${s.siteName}` : s.siteName;
+const desc =
+  description ??
+  (lang === 'ar'
+    ? 'جيوا ليست مجرد أسم بل هى علامة للثقة و التميز.'
+    : 'Jiwa is not just a name, it is a brand. Over the past years, Jiwa has become an icon of development and uniqueness in the real estate field in Egypt.');
+const here = Astro.url.pathname;
+const enPath = lang === 'en' ? here : u(alt);
+const arPath = lang === 'ar' ? here : u(alt);
+---
+<!doctype html>
+<html lang={lang} dir={lang === 'ar' ? 'rtl' : 'ltr'}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{pageTitle}</title>
+    <meta name="description" content={desc} />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={desc} />
+    <meta property="og:image" content={new URL(img('2024/07/angle-featured.jpg'), Astro.site).href} />
+    <meta property="og:type" content="website" />
+    <link rel="alternate" hreflang="en" href={new URL(enPath, Astro.site).href} />
+    <link rel="alternate" hreflang="ar" href={new URL(arPath, Astro.site).href} />
+    <link rel="icon" href={img('2026/01/cropped-jiwa-fav-32x32.webp')} sizes="32x32" />
+    <link rel="icon" href={img('2026/01/cropped-jiwa-fav-192x192.webp')} sizes="192x192" />
+    <link rel="apple-touch-icon" href={img('2026/01/cropped-jiwa-fav-180x180.webp')} />
+    <meta name="theme-color" content="#151515" />
+    <script is:inline>
+      // Apply the saved light / dark mode before first paint (same "mode" key as the original site).
+      // Like the original, the Arabic site starts in dark mode and the English site in light mode
+      // until the visitor picks one with the toggle.
+      (function () {
+        var d = document.documentElement;
+        var m = d.lang === 'ar' ? 'dark' : 'light';
+        try {
+          var p = new URLSearchParams(location.search).get('color');
+          m = p === 'v-dark' ? 'dark' : p === 'v-light' ? 'light' : localStorage.getItem('mode') || m;
+        } catch (e) {}
+        if (m === 'dark') d.classList.add('dark-mode');
+      })();
+    </script>
+  </head>
+  <body>
+    <a class="skip-link" href="#content">{lang === 'ar' ? 'تخطي إلى المحتوى الرئيسي' : 'Skip to main content'}</a>
+    <Header lang={lang} alt={alt} active={active} />
+    <main id="content">
+      <slot />
+    </main>
+    <Footer lang={lang} />
+    <ThemeToggle lang={lang} />
+    <script>
+      import '../scripts/main.ts';
+    </script>
+  </body>
+</html>

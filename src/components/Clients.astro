@@ -1,0 +1,22 @@
+---
+import { type Lang, t, img, clients } from '../data/site';
+interface Props { lang: Lang }
+const s = t[Astro.props.lang];
+const loop = [...clients, ...clients, ...clients];
+---
+<section class="clients">
+  <div class="container clients-inner">
+    <h2 class="heading clients-title reveal">
+      {s.clients[0] && <span>{s.clients[0]} </span>}<span class="accent">{s.clients[1]}</span>
+    </h2>
+    <div class="clients-track-wrap">
+      <div class="clients-track" data-marquee data-copies="3">
+        {loop.map((c, i) => (
+          <div class="client-card" aria-hidden={i >= clients.length ? 'true' : undefined}>
+            <img src={img(c.src)} alt={c.alt} loading="lazy" />
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>

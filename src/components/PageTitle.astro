@@ -1,0 +1,18 @@
+---
+import Icon from './Icon.astro';
+import { img, u } from '../data/site';
+interface Props { title: string; bg: string; button?: { label: string; href: string; download?: boolean } }
+const { title, bg, button } = Astro.props;
+---
+<section class="page-title">
+  <div class="pt-bg" style={`background-image:url('${img(bg)}')`} data-parallax></div>
+  <div class="pt-overlay"></div>
+  <div class="pt-content">
+    <h1 class="reveal">{title}</h1>
+    {button && (
+      <a class="btn btn-accent reveal" style="--d:.15s" href={u(button.href)} target={button.download ? '_blank' : undefined} rel={button.download ? 'noopener' : undefined}>
+        <span>{button.label}</span><Icon name="arrow-up-right" size={14} />
+      </a>
+    )}
+  </div>
+</section>

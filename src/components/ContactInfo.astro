@@ -1,0 +1,23 @@
+---
+import Icon from './Icon.astro';
+import { type Lang, t, contact } from '../data/site';
+interface Props { lang: Lang }
+const s = t[Astro.props.lang].contactInfo;
+const items = [
+  { icon: 'mail', title: s.mail, text: contact.email, cta: s.mailCta, href: `mailto:${contact.email}` },
+  { icon: 'phone', title: s.call, text: contact.phone, cta: s.callCta, href: contact.phoneHref },
+  { icon: 'pin', title: s.address, text: s.addressText, cta: s.addressCta, href: contact.map, ext: true },
+];
+---
+<section class="contact-info container">
+  {items.map((it, i) => (
+    <div class="ci-item reveal" style={`--d:${i * 0.1}s`}>
+      <span class="ci-icon"><Icon name={it.icon} size={20} /></span>
+      <div>
+        <h5><a href={it.href} target={it.ext ? '_blank' : undefined} rel={it.ext ? 'noopener' : undefined}>{it.title}</a></h5>
+        <div class="ci-text" dir="auto">{it.text}</div>
+        <a class="ci-cta" href={it.href} target={it.ext ? '_blank' : undefined} rel={it.ext ? 'noopener' : undefined}>{it.cta}</a>
+      </div>
+    </div>
+  ))}
+</section>

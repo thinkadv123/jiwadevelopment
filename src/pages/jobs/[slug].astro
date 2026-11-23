@@ -1,0 +1,9 @@
+---
+import Job from '../../views/Job.astro';
+import jobs from '../../data/jobs.json';
+export function getStaticPaths() {
+  return jobs.filter((j) => j.lang === 'en').map((j) => ({ params: { slug: j.slug }, props: { job: j } }));
+}
+const { job } = Astro.props;
+---
+<Job lang="en" job={job} />

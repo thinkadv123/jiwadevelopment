@@ -1,0 +1,12 @@
+---
+import Project from '../../views/Project.astro';
+import { projects } from '../../data/site';
+export function getStaticPaths() {
+  const paths = projects.map((p) => ({ params: { slug: p.slug }, props: { project: p } }));
+  // The original footer linked to /portfolio/ai-angle/ — keep that URL working too.
+  paths.push({ params: { slug: 'ai-angle' }, props: { project: projects[0] } });
+  return paths;
+}
+const { project } = Astro.props;
+---
+<Project lang="en" project={project} />

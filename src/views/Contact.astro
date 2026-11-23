@@ -1,0 +1,35 @@
+---
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import PageTitle from '../components/PageTitle.astro';
+import ContactForm from '../components/ContactForm.astro';
+import { type Lang, routes, contact } from '../data/site';
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const ar = lang === 'ar';
+const c = ar
+  ? { title: 'تواصل معنا', h: ['ابدأ رحلتك مع', 'جيوا'], call: 'اتصل بنا', mail: 'راسلنا', follow: 'تابعنا' }
+  : { title: 'Get in Touch', h: ['Feel Free To Ask Us', 'Anything'], call: 'CALL US FOR QUERY', mail: 'SEND US EMAIL', follow: 'FOLLOW US' };
+---
+<Base lang={lang} title={c.title} alt={ar ? routes.en.contact : routes.ar.contact} active="contact">
+  <PageTitle title={c.title} bg="2026/02/slide-22.webp" />
+  <section class="contact-page section-pad">
+    <div class="container contact-grid">
+      <div class="contact-side">
+        <h2 class="heading h-md reveal">{c.h[0]}<br /><span class="accent">{c.h[1]}</span></h2>
+        <div class="cp-info reveal"><span class="cp-label">{c.call}</span><a href={contact.phoneHref}>{contact.phone}</a></div>
+        <div class="cp-info reveal"><span class="cp-label">{c.mail}</span><a href={`mailto:${contact.email}`}>{contact.email}</a></div>
+        <div class="cp-info reveal">
+          <span class="cp-label">{c.follow}</span>
+          <div class="socials">
+            {contact.social.map((s) => <a href={s.href} target="_blank" rel="noopener" aria-label={s.name}><Icon name={s.icon} size={15} /></a>)}
+          </div>
+        </div>
+      </div>
+      <div class="reveal" style="--d:.1s"><ContactForm lang={lang} variant="box" /></div>
+    </div>
+  </section>
+  <section class="map-wrap">
+    <iframe src={contact.mapEmbed} title="220 Crown Plaza Building North 90 ST, 5th Settlement, New Cairo" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+  </section>
+</Base>

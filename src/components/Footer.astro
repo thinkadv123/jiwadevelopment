@@ -1,0 +1,39 @@
+---
+import { type Lang, t, u, img, routes, projects, projectMenu, logos } from '../data/site';
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const s = t[lang];
+const r = routes[lang];
+const left = [
+  { href: r.home, label: s.nav.home },
+  { href: r.about, label: s.nav.about },
+  { href: r.careers, label: s.nav.careers },
+  { href: r.contact, label: s.nav.contact },
+];
+const right = projectMenu.map((slug) => {
+  const p = projects.find((x) => x.slug === slug)!;
+  return { href: r.project(slug), label: slug === 'za-white' ? 'Za white' : p.en.title.toUpperCase() };
+});
+---
+<footer class="site-footer">
+  <div class="ft-pattern" style={`background-image:url('${img('2024/03/footer.jpg')}')`} aria-hidden="true"></div>
+  <div class="ft-arc" aria-hidden="true"></div>
+  <div class="container ft-main">
+    <ul class="ft-links">
+      {left.map((l) => <li><a href={u(l.href)}>{l.label}</a></li>)}
+    </ul>
+    <div class="ft-center">
+      <a href={u(r.home)} class="ft-logo" aria-label={s.siteName}>
+        <img class="logo-light" src={logos.white} alt={s.siteName} width="1000" height="516" loading="lazy" />
+        <img class="logo-dark" src={logos.red} alt="" width="1000" height="516" loading="lazy" />
+      </a>
+      <p class="ft-text">{s.footerText}</p>
+    </div>
+    <ul class="ft-links ft-links-end">
+      {right.map((l) => <li><a class="latin" href={u(l.href)}>{l.label}</a></li>)}
+    </ul>
+  </div>
+  <div class="ft-bottom">
+    <p>{s.copyright} <a href="https://thinkadv.com" target="_blank" rel="noopener">Thinkadv</a></p>
+  </div>
+</footer>

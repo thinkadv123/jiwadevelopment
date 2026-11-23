@@ -1,0 +1,11 @@
+---
+// Two-tone heading: regular text followed by an italic serif accent (Playfair Display in English).
+interface Props { plain?: string; accent?: string; tag?: string; class?: string; stack?: boolean; accentFirst?: boolean }
+const { plain = '', accent = '', tag = 'h2', class: cls = '', stack = false, accentFirst = false } = Astro.props;
+const Tag = tag as any;
+---
+<Tag class={`heading ${cls}`}>
+  {accentFirst && accent && <><span class="accent">{accent}</span>{stack ? <br /> : ' '}</>}
+  {plain && <span>{plain}</span>}
+  {!accentFirst && accent && <>{plain && (stack ? <br /> : ' ')}<span class="accent">{accent}</span></>}
+</Tag>
